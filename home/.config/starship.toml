@@ -1,0 +1,245 @@
+# Starship configuration matching Powerlevel10k lean style
+# Based on .p10k.zsh configuration
+
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Format - two line prompt with newline before
+format = """
+$os\
+$directory\
+$git_branch\
+$git_status\
+$line_break\
+$character"""
+
+# Add newline before each prompt
+add_newline = true
+
+# OS icon - matches os_icon segment
+[os]
+disabled = false
+format = '[$symbol](bold white) '
+
+[os.symbols]
+Arch = ""
+Macos = ""
+Linux = ""
+
+# Directory - matches dir segment with truncate_to_unique strategy
+[directory]
+format = '[$path]($style)[$read_only]($read_only_style) '
+style = 'bold cyan'
+read_only = ' '
+read_only_style = 'bold red'
+truncation_length = 0
+truncate_to_repo = false
+truncation_symbol = ''
+# Use fish-style path shortening
+fish_style_pwd_dir_length = 1
+# Don't truncate when in important directories
+before_repo_root_style = 'bold blue'
+repo_root_style = 'bold blue'
+
+# Git branch - matches vcs segment
+[git_branch]
+format = '[$symbol$branch(:$remote_branch)]($style) '
+symbol = ' '
+style = 'bold green'
+truncation_length = 32
+truncation_symbol = '…'
+
+# Git status - matches vcs segment
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+style = 'bold red'
+conflicted = '='
+ahead = '⇡${count}'
+behind = '⇣${count}'
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+untracked = '?${count}'
+stashed = '\$${count}'
+modified = '!${count}'
+staged = '+${count}'
+renamed = '»${count}'
+deleted = '✘${count}'
+
+# Prompt character - matches prompt_char segment
+[character]
+success_symbol = '[❯](bold green)'
+error_symbol = '[❯](bold red)'
+vimcmd_symbol = '[❮](bold green)'
+vimcmd_visual_symbol = '[V](bold green)'
+vimcmd_replace_symbol = '[▶](bold green)'
+
+# Command duration - matches command_execution_time segment (right prompt)
+[cmd_duration]
+min_time = 2_000
+format = '[$duration]($style) '
+style = 'bold yellow'
+show_milliseconds = false
+
+# Status - matches status segment (right prompt)
+[status]
+disabled = false
+format = '[$symbol$status]($style) '
+style = 'bold red'
+symbol = '✘'
+not_executable_symbol = '🚫'
+not_found_symbol = '🔍'
+sigint_symbol = '🧱'
+signal_symbol = '⚡'
+
+# Background jobs - matches background_jobs segment
+[jobs]
+format = '[$symbol$number]($style) '
+symbol = '✦'
+style = 'bold blue'
+number_threshold = 1
+
+# Python virtual environment - matches virtualenv/anaconda/pyenv segments
+[python]
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+symbol = ' '
+style = 'bold yellow'
+pyenv_version_name = false
+detect_extensions = ['py']
+detect_files = ['.python-version', 'Pipfile', 'pyproject.toml', 'requirements.txt', 'setup.py', 'tox.ini']
+
+# Node.js version - matches nvm/nodenv/nodeenv segments
+[nodejs]
+format = '[$symbol($version )]($style)'
+symbol = ' '
+style = 'bold green'
+detect_extensions = ['js', 'mjs', 'cjs', 'ts', 'mts', 'cts']
+detect_files = ['package.json', '.node-version', '.nvmrc']
+
+# Go version - matches goenv segment
+[golang]
+format = '[$symbol($version )]($style)'
+symbol = ' '
+style = 'bold cyan'
+detect_extensions = ['go']
+detect_files = ['go.mod', 'go.sum', '.go-version']
+
+# Rust version - matches rust_version segment
+[rust]
+format = '[$symbol($version )]($style)'
+symbol = ' '
+style = 'bold red'
+detect_extensions = ['rs']
+detect_files = ['Cargo.toml', 'Cargo.lock']
+
+# Ruby version - matches rbenv/rvm segments
+[ruby]
+format = '[$symbol($version )]($style)'
+symbol = ' '
+style = 'bold red'
+detect_extensions = ['rb']
+detect_files = ['.ruby-version', 'Gemfile']
+
+# Kubernetes context - matches kubecontext segment
+[kubernetes]
+format = '[$symbol$context( \($namespace\))]($style) '
+symbol = '☸ '
+style = 'bold blue'
+disabled = false
+detect_extensions = []
+detect_files = ['k8s']
+detect_folders = []
+
+# Terraform - matches terraform segment
+[terraform]
+format = '[$symbol$workspace]($style) '
+symbol = '💠 '
+style = 'bold purple'
+detect_extensions = ['tf', 'tfplan', 'tfstate']
+detect_files = []
+
+# AWS - matches aws segment
+[aws]
+format = '[$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
+symbol = '☁️ '
+style = 'bold yellow'
+
+# Azure - matches azure segment
+[azure]
+format = '[$symbol($subscription)]($style) '
+symbol = 'ﴃ '
+style = 'bold blue'
+disabled = false
+
+# Google Cloud - matches gcloud segment
+[gcloud]
+format = '[$symbol$account(@$domain)(\($region\))]($style) '
+symbol = '☁️ '
+style = 'bold blue'
+
+# Container context - matches toolbox segment
+[container]
+format = '[$symbol \[$name\]]($style) '
+symbol = '⬢'
+style = 'bold red dimmed'
+
+# Time - matches time segment (24h format, right prompt)
+[time]
+disabled = false
+format = '[$time]($style) '
+style = 'bold white'
+time_format = '%T'
+utc_time_offset = 'local'
+
+# Direnv - matches direnv segment
+[direnv]
+format = '[$symbol$loaded/$allowed]($style) '
+symbol = 'direnv '
+style = 'bold orange'
+disabled = false
+detect_extensions = []
+detect_files = ['.envrc']
+detect_folders = []
+allowed_msg = 'allowed'
+denied_msg = 'denied'
+loaded_msg = 'loaded'
+unloaded_msg = 'not loaded'
+
+# Environment variables for language version managers
+[env_var.ASDF_VERSION]
+format = '[$env_value]($style) '
+style = 'bold dimmed white'
+disabled = false
+
+# Disable segments that were commented out in p10k
+[package]
+disabled = true
+
+[java]
+disabled = true
+
+[dotnet]
+disabled = true
+
+[php]
+disabled = true
+
+[lua]
+disabled = true
+
+[perl]
+disabled = true
+
+[scala]
+disabled = true
+
+[haskell]
+disabled = true
+
+# Shell indicator - matches vim_shell, nix_shell, etc.
+[shell]
+disabled = false
+format = '[$indicator]($style) '
+bash_indicator = 'bsh'
+fish_indicator = 'fsh'
+zsh_indicator = ''
+powershell_indicator = 'psh'
+style = 'bold white'

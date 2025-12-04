@@ -1,0 +1,46 @@
+# OneDark Dark theme for Ghostty
+# Based on OneDarkPro's onedark_dark variant
+
+# Background and foreground
+background = #1e222a
+foreground = #abb2bf
+
+# Cursor
+cursor-color = #abb2bf
+cursor-text = #1e222a
+
+# Selection
+selection-background = #3e4451
+selection-foreground = #abb2bf
+
+# Black
+palette = 0=#1e222a
+palette = 8=#5c6370
+
+# Red
+palette = 1=#e06c75
+palette = 9=#e06c75
+
+# Green
+palette = 2=#98c379
+palette = 10=#98c379
+
+# Yellow
+palette = 3=#e5c07b
+palette = 11=#e5c07b
+
+# Blue
+palette = 4=#61afef
+palette = 12=#61afef
+
+# Magenta
+palette = 5=#c678dd
+palette = 13=#c678dd
+
+# Cyan
+palette = 6=#56b6c2
+palette = 14=#56b6c2
+
+# White
+palette = 7=#abb2bf
+palette = 15=#ffffff

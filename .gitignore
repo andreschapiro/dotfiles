@@ -1,0 +1,24 @@
+raycast*
+.claude/*
+
+# Private fonts (licensed, stored in dotfiles-data)
+fonts/*.otf
+fonts/*.ttf
+fonts/monolisa-nerdfont-patch
+
+# Private data repo (cloned into dotfiles)
+dotfiles-data/
+
+# SSH keys (never commit private keys)
+home/.ssh/id_*
+home/.ssh/known_hosts
+home/.ssh/*.pub
+
+# Secrets and credentials (catch-all)
+*.pem
+*.key
+*.secret
+.env
+.env.*
+credentials.json
+secrets.json

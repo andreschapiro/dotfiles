@@ -1,0 +1,7 @@
+# Paths to ignore during clean
+# Uses gitignore-style patterns
+
+# SSH keys and known hosts (not managed by dotfiles)
+.ssh/id_*
+.ssh/known_hosts
+.ssh/*.pub

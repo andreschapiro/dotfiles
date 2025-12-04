@@ -1,0 +1,33 @@
+# Omarchy theme matching Alacritty colors
+# Based on One Dark Pro
+
+# Background and foreground
+background = #282c34
+foreground = #abb2bf
+
+# Cursor
+cursor-color = #abb2bf
+
+# Selection
+selection-background = #61afef
+selection-foreground = #282c34
+
+# Normal colors (0-7)
+palette = 0=#282c34
+palette = 1=#ef596f
+palette = 2=#89ca78
+palette = 3=#e5c07b
+palette = 4=#61afef
+palette = 5=#d55fde
+palette = 6=#2bbac5
+palette = 7=#abb2bf
+
+# Bright colors (8-15)
+palette = 8=#5c6370
+palette = 9=#d19a66
+palette = 10=#89ca78
+palette = 11=#e2be7d
+palette = 12=#61afef
+palette = 13=#d55fde
+palette = 14=#2bbac5
+palette = 15=#abb2bf
