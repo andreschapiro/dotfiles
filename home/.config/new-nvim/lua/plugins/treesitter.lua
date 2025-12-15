@@ -46,28 +46,35 @@ return {
       end
     end,
   },
+  -- Textobjects via mini.ai (modern replacement for nvim-treesitter-textobjects)
   {
-    "nvim-treesitter/nvim-treesitter-textobjects",
+    "echasnovski/mini.ai",
     event = { "BufReadPost", "BufNewFile" },
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = function()
-      -- Textobjects keymaps using the select module
-      local ok, select = pcall(require, "nvim-treesitter.textobjects.select")
-      if ok then
-        vim.keymap.set({ "x", "o" }, "af", function() select.select_textobject("@function.outer", "textobjects") end, { desc = "Select outer function" })
-        vim.keymap.set({ "x", "o" }, "if", function() select.select_textobject("@function.inner", "textobjects") end, { desc = "Select inner function" })
-        vim.keymap.set({ "x", "o" }, "ac", function() select.select_textobject("@class.outer", "textobjects") end, { desc = "Select outer class" })
-        vim.keymap.set({ "x", "o" }, "ic", function() select.select_textobject("@class.inner", "textobjects") end, { desc = "Select inner class" })
-        vim.keymap.set({ "x", "o" }, "aa", function() select.select_textobject("@parameter.outer", "textobjects") end, { desc = "Select outer parameter" })
-        vim.keymap.set({ "x", "o" }, "ia", function() select.select_textobject("@parameter.inner", "textobjects") end, { desc = "Select inner parameter" })
-      end
-
-      -- Repeat movement with ; and ,
-      local ok2, ts_repeat_move = pcall(require, "nvim-treesitter.textobjects.repeatable_move")
-      if ok2 then
-        vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
-        vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
-      end
-    end,
+    opts = {
+      n_lines = 500,
+      custom_textobjects = {
+        -- Function textobject
+        f = function()
+          local ok, spec = pcall(require, "mini.ai")
+          if ok then
+            return spec.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" })
+          end
+        end,
+        -- Class textobject
+        c = function()
+          local ok, spec = pcall(require, "mini.ai")
+          if ok then
+            return spec.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" })
+          end
+        end,
+        -- Parameter/argument textobject
+        a = function()
+          local ok, spec = pcall(require, "mini.ai")
+          if ok then
+            return spec.gen_spec.treesitter({ a = "@parameter.outer", i = "@parameter.inner" })
+          end
+        end,
+      },
+    },
   },
 }
