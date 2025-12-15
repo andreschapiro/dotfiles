@@ -59,9 +59,12 @@ return {
           { icon = " ", key = "g", desc = "Find Text", action = ":lua require('snacks').picker.grep()" },
           { icon = " ", key = "s", desc = "Restore Session", action = function()
               require('persistence').load()
-              -- Refresh current buffer to trigger LSP and treesitter
+              -- Refresh current buffer to trigger LSP and treesitter (only if buffer has a file)
               vim.schedule(function()
-                vim.cmd("edit")
+                local bufname = vim.api.nvim_buf_get_name(0)
+                if bufname ~= "" and vim.fn.filereadable(bufname) == 1 then
+                  vim.cmd("edit")
+                end
               end)
             end
           },

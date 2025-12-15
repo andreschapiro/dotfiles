@@ -1,13 +1,22 @@
 return {
-  "folke/todo-comments.nvim",
-  dependencies = { "nvim-lua/plenary.nvim" },
-  opts = {
-    signs = false,
-    highlight = {
-      keyword = "bg",
+  {
+    "folke/todo-comments.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      signs = false,
+      highlight = {
+        keyword = "bg",
+      },
+      keywords = {
+        FIX = { icon = " " },
+      },
     },
-    keywords = {
-      FIX = { icon = " " }, -- Custom fix icon
+    keys = {
+      { "]t", function() require("todo-comments").jump_next() end, desc = "Next TODO" },
+      { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous TODO" },
+      { "<leader>st", function() require("snacks").picker.todo_comments() end, desc = "[S]earch [T]ODOs" },
+      { "<leader>sT", function() require("snacks").picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, desc = "[S]earch TODOs/FIXes only" },
     },
   },
   {
@@ -122,6 +131,13 @@ return {
           require("noice").cmd("dismiss")
         end,
         desc = "Dismiss All Messages",
+      },
+      {
+        "<leader>ne",
+        function()
+          require("noice").cmd("errors")
+        end,
+        desc = "Error Messages",
       },
       {
         "<c-f>",
