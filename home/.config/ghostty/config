@@ -12,14 +12,9 @@ macos-titlebar-style = native
 mouse-hide-while-typing = "true"
 
 #font
-font-family = "MonoLisa Variable"
-font-thicken = true
-bold-is-bright = true
-# font-family = "MonoLisaVariable Nerd Font"
+font-family = "MonoLisa Nerd Font"
 font-size = 10
-# font-variation = wght=800
-# font-thicken = true
-# bold-is-bright = true
+bold-is-bright = true
 
 #theme
 theme = omarchy
