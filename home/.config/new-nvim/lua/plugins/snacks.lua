@@ -225,6 +225,13 @@ return {
       desc = "[S]earch [F]iles",
     },
     {
+      "<leader>se",
+      function()
+        require("snacks").picker.explorer()
+      end,
+      desc = "[S]earch [E]xplorer",
+    },
+    {
       "<leader>s.",
       function()
         require("snacks").picker.recent()
