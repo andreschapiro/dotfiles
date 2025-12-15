@@ -18,7 +18,9 @@ clone_dotfiles_data() {
   fi
 
   # Check if we have SSH access (for private repo)
-  if ! ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"; then
+  local ssh_output
+  ssh_output=$(ssh -T git@github.com 2>&1 || true)
+  if ! echo "$ssh_output" | grep -q "successfully authenticated"; then
     echo "  Warning: No GitHub SSH access, skipping private fonts"
     echo "  Fonts will need to be manually installed to ~/dotfiles/dotfiles-data/fonts/"
     return 1

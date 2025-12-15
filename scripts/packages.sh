@@ -56,7 +56,7 @@ setup_arch_packages() {
     fd             # Modern find
     bat            # Modern cat with syntax highlighting
     # Development tools
-    gh             # GitHub CLI
+    github-cli     # GitHub CLI (gh)
     luarocks       # Lua package manager (for neovim plugins)
     fontconfig     # Font configuration
   )

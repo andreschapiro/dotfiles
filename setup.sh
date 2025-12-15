@@ -5,6 +5,9 @@ set -euo pipefail
 DOTS_FOLDER="${HOME}/dotfiles"
 DRY_RUN="${DRY_RUN:-false}"
 
+# 1Password SSH Agent (needed for private repo access)
+export SSH_AUTH_SOCK="${HOME}/.1password/agent.sock"
+
 # Source all scripts
 source scripts/filesystem.sh
 source scripts/packages.sh
