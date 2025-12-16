@@ -6,7 +6,7 @@ Personal dotfiles for macOS and Arch Linux (Omarchy).
 
 ```bash
 # Clone the repo
-git clone https://github.com/andychapman/dotfiles.git ~/dotfiles
+git clone https://github.com/andreschapiro/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 
 # Run setup
@@ -15,13 +15,13 @@ cd ~/dotfiles
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `./setup.sh` | Full setup: clean, packages, fonts, shell, stow |
-| `./setup.sh clean` | Check for and clean dangling configs |
-| `./setup.sh backup` | Backup current configurations |
-| `./setup.sh update` | Update packages (brew/pacman, mise) |
-| `./setup.sh uninstall` | Remove symlinks |
+| Command                | Description                                     |
+| ---------------------- | ----------------------------------------------- |
+| `./setup.sh`           | Full setup: clean, packages, fonts, shell, stow |
+| `./setup.sh clean`     | Check for and clean dangling configs            |
+| `./setup.sh backup`    | Backup current configurations                   |
+| `./setup.sh update`    | Update packages (brew/pacman, mise)             |
+| `./setup.sh uninstall` | Remove symlinks                                 |
 
 ### Dry Run
 
@@ -105,6 +105,7 @@ MANAGED_PATHS=(
 ```
 
 This is used for:
+
 - Backing up existing configs before stowing
 - Removing old symlinks before re-stowing
 - Documentation of what's managed
@@ -114,6 +115,7 @@ This is used for:
 Fonts are stored in a separate private repository (`dotfiles-data`) due to licensing. The setup script will attempt to clone it if you have SSH access.
 
 To manually install fonts, place `.otf` or `.ttf` files in:
+
 - **macOS**: `~/Library/Fonts/`
 - **Linux**: `~/.local/share/fonts/`
 
