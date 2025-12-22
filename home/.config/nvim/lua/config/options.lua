@@ -13,6 +13,9 @@ Sessiondir = vim.fn.stdpath("data") .. "/sessions"
 vg.mapleader = " " -- space is the leader!
 vg.maplocalleader = "\\"
 
+-- Enable filetype detection, plugins, and indent
+vim.cmd("filetype plugin indent on")
+
 -- Buffer options
 -- Note: autoindent and smartindent are disabled in favor of treesitter indent
 -- vb.autoindent = true
