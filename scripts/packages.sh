@@ -115,6 +115,7 @@ setup_mac_packages() {
     gh             # GitHub CLI
     luarocks       # Lua package manager (for neovim plugins)
     fontconfig     # Font configuration
+    tree-sitter-cli # Parser generator CLI (required for nvim-treesitter main branch)
   )
 
   for package in "${packages[@]}"; do

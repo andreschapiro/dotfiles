@@ -67,14 +67,15 @@ return {
     cmdline = {
       enabled = true,
       keymap = {
-        ["<Tab>"] = { "select_next", "fallback" },
+        ["<Tab>"] = { "show", "select_next", "fallback" },
         ["<S-Tab>"] = { "select_prev", "fallback" },
-        ["<CR>"] = { "accept", "fallback" },
-        ["<C-e>"] = { "hide" },
+        ["<CR>"] = { "fallback" }, -- Always execute command, don't accept completion
+        ["<C-y>"] = { "accept" }, -- Use C-y to accept completion
+        ["<C-e>"] = { "hide", "fallback" },
       },
       completion = {
         menu = {
-          auto_show = true,
+          auto_show = false, -- Only show on Tab
         },
       },
     },

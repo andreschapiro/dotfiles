@@ -13,7 +13,8 @@ end
 return {
   "olimorris/onedarkpro.nvim",
   name = "onedarkpro",
-  priority = 1000,
+  lazy = false, -- Load immediately
+  priority = 1000, -- Load before other plugins
   config = function()
     require("onedarkpro").setup({
       colors = {
@@ -23,8 +24,9 @@ return {
           statusline_bg = "require('onedarkpro.helpers').lighten('bg', 4, 'vaporwave')", -- gray
           statuscolumn_border = "require('onedarkpro.helpers').lighten('bg', 4, 'vaporwave')", -- gray
           ellipsis = "require('onedarkpro.helpers').lighten('bg', 4, 'vaporwave')", -- gray
-          picker_results = "require('onedarkpro.helpers').darken('bg', 4, 'vaporwave')",
-          picker_selection = "require('onedarkpro.helpers').darken('bg', 8, 'vaporwave')",
+          picker_results = "require('onedarkpro.helpers').darken('bg', 4, 'onedark_vivid')",
+          picker_selection = "require('onedarkpro.helpers').darken('bg', 8, 'onedark_vivid')",
+          picker_input = "require('onedarkpro.helpers').lighten('bg', 4, 'onedark_vivid')",
           copilot = "require('onedarkpro.helpers').darken('gray', 8, 'vaporwave')",
           breadcrumbs = "require('onedarkpro.helpers').darken('gray', 10, 'vaporwave')",
           light_gray = "require('onedarkpro.helpers').darken('gray', 7, 'vaporwave')",
@@ -36,6 +38,7 @@ return {
           ellipsis = "#808080", -- gray
           picker_results = "require('onedarkpro.helpers').darken('bg', 4, 'onedark')",
           picker_selection = "require('onedarkpro.helpers').darken('bg', 8, 'onedark')",
+          picker_input = "require('onedarkpro.helpers').lighten('bg', 4, 'onedark_vivid')",
           copilot = "require('onedarkpro.helpers').darken('gray', 8, 'onedark')",
           breadcrumbs = "require('onedarkpro.helpers').darken('gray', 10, 'onedark')",
           light_gray = "require('onedarkpro.helpers').darken('gray', 7, 'onedark')",
@@ -47,6 +50,7 @@ return {
           ellipsis = "require('onedarkpro.helpers').lighten('bg', 4, 'onedark_vivid')",
           picker_results = "require('onedarkpro.helpers').darken('bg', 4, 'onedark_vivid')",
           picker_selection = "require('onedarkpro.helpers').darken('bg', 8, 'onedark_vivid')",
+          picker_input = "require('onedarkpro.helpers').lighten('bg', 4, 'onedark_vivid')",
           copilot = "require('onedarkpro.helpers').darken('gray', 8, 'onedark_vivid')",
           breadcrumbs = "require('onedarkpro.helpers').darken('gray', 10, 'onedark_vivid')",
           light_gray = "require('onedarkpro.helpers').darken('gray', 7, 'onedark_vivid')",
@@ -122,7 +126,7 @@ return {
         EdgyTitle = { fg = "${purple}", bold = true },
 
         NormalFloat = { bg = "${bg}" }, -- Set the terminal background to be the same as the editor
-        FloatBorder = { fg = "${gray}", bg = "${bg}" },
+        FloatBorder = { fg = "${blue}", bg = "${bg}" },
 
         CursorLineNr = { bg = "${bg}", fg = "${fg}", italic = true },
         MatchParen = { fg = "${cyan}" },
@@ -138,18 +142,27 @@ return {
         SnacksDashboardFooterEmphasis = { fg = "${blue}" },
         SnacksDashboardFooterVersion = { fg = "${gray}" },
 
-        -- Snacks picker
-        SnacksPicker = { bg = "${picker_results}" },
-        SnacksPickerDir = { fg = "${gray}", italic = true },
-        SnacksPickerBorder = { fg = "${picker_results}", bg = "${picker_results}" },
-        SnacksPickerListCursorLine = { bg = "${picker_selection}" },
-        SnacksPickerPrompt = { bg = "${picker_results}", fg = "${purple}", bold = true },
-        SnacksPickerSelected = { bg = "${picker_results}", fg = "${orange}" },
-        SnacksPickerTitle = { bg = "${purple}", fg = "${picker_results}", bold = true },
-        SnacksPickerToggle = { bg = "${purple}", fg = "${picker_results}", italic = true },
-        SnacksPickerTotals = { bg = "${picker_results}", fg = "${purple}", bold = true },
-        SnacksPickerUnselected = { bg = "${picker_results}" },
+        -- Snacks picker - Input section (lighter background)
+        SnacksPickerInput = { bg = "${picker_input}" },
+        SnacksPickerInputBorder = { fg = "${picker_input}", bg = "${picker_input}" },
+        SnacksPickerInputTitle = { bg = "${picker_input}", fg = "${blue}", bold = true },
+        SnacksPickerPrompt = { bg = "${picker_input}", fg = "${blue}", bold = true },
 
+        -- Snacks picker - Results/List section (darker background)
+        SnacksPicker = { bg = "${picker_results}" },
+        SnacksPickerList = { bg = "${picker_results}" },
+        SnacksPickerBorder = { fg = "${picker_results}", bg = "${picker_results}" },
+        SnacksPickerListBorder = { fg = "${picker_results}", bg = "${picker_results}" },
+        SnacksPickerDir = { fg = "${gray}", italic = true },
+        SnacksPickerListCursorLine = { bg = "${picker_selection}" },
+        SnacksPickerSelected = { bg = "${picker_results}", fg = "${orange}" },
+        SnacksPickerTitle = { bg = "${purple}", fg = "${bg}", bold = true },
+        SnacksPickerToggle = { bg = "${purple}", fg = "${bg}", italic = true },
+        SnacksPickerTotals = { bg = "${picker_input}", fg = "${purple}", bold = true },
+        SnacksPickerUnselected = { bg = "${picker_results}" },
+        SnacksPickerMatch = { fg = "${orange}", bold = true },
+
+        -- Snacks picker - Preview section (editor background)
         SnacksPickerPreview = { bg = "${bg}" },
         SnacksPickerPreviewBorder = { fg = "${bg}", bg = "${bg}" },
         SnacksPickerPreviewTitle = { bg = "${green}", fg = "${bg}", bold = true },

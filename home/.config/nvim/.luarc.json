@@ -1,12 +1,5 @@
 {
-<<<<<<< HEAD
-    "diagnostics.disable": [
-        "missing-fields"
-    ]
-}
-=======
   "diagnostics": {
     "globals": ["vim"]
   }
 }
->>>>>>> d2db596 (Adding new-nvim config)

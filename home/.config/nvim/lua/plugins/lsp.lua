@@ -103,7 +103,7 @@ return {
           tailwindcss = {
             filetypes = { "typescriptreact", "javascriptreact", "html", "astro" },
           },
-          ts_ls = {},
+          -- ts_ls disabled in favor of vtsls (configured in typescript.lua)
           yamlls = {},
           zls = {},
           rust_analyzer = {
@@ -254,7 +254,7 @@ return {
             "marksman",
             "rust_analyzer",
             "tailwindcss",
-            "ts_ls",
+            "vtsls", -- Better TypeScript LSP (replaces ts_ls)
             "yamlls",
           }
         or {}
