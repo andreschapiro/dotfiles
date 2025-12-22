@@ -1,6 +1,6 @@
 return {
   "saghen/blink.cmp",
-  event = "InsertEnter", -- Load on entering insert mode
+  event = { "InsertEnter", "CmdlineEnter" }, -- Load on entering insert or cmdline mode
   dependencies = {
     {
       "rafamadriz/friendly-snippets",
@@ -13,7 +13,7 @@ return {
       build = "make install_jsregexp", -- Optional: for better regex support
     },
   },
-  version = "v0.*",
+  version = "*", -- Use latest version for better cmdline support
   opts = {
     keymap = {
       preset = "default",
@@ -66,9 +66,16 @@ return {
     -- Cmdline completion configuration
     cmdline = {
       enabled = true,
-      sources = {
-        default = { "buffer" },
-        [":"] = { "cmdline", "path" },
+      keymap = {
+        ["<Tab>"] = { "select_next", "fallback" },
+        ["<S-Tab>"] = { "select_prev", "fallback" },
+        ["<CR>"] = { "accept", "fallback" },
+        ["<C-e>"] = { "hide" },
+      },
+      completion = {
+        menu = {
+          auto_show = true,
+        },
       },
     },
 

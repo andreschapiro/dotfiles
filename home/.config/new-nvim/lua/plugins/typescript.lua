@@ -232,23 +232,22 @@ return {
         })
       end, { desc = "Show TypeScript compiler version" })
       
-      -- Auto-command to organize imports on save for TS/JS files
+      -- Auto-command to organize imports on save for TS/JS files using Biome
+      -- Biome's organizeImports is more reliable than ts_ls and won't truncate imports
       vim.api.nvim_create_autocmd("BufWritePre", {
         pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
         callback = function()
-          -- Only if LSP is attached
           local clients = vim.lsp.get_clients({ bufnr = 0 })
           for _, client in ipairs(clients) do
-            if client.name == "ts_ls" then
-              -- Organize imports
+            if client.name == "biome" then
               vim.lsp.buf.code_action({
                 context = {
-                  only = { "source.organizeImports" },
+                  only = { "source.organizeImports.biome" },
                   diagnostics = {},
                 },
                 apply = true,
               })
-              break
+              return
             end
           end
         end,

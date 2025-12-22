@@ -49,7 +49,19 @@ return {
           bashls = {},
           biome = {},
           copilot = {}, -- Copilot LSP for sidekick.nvim NES
-          cssls = {},
+          cssls = {
+            settings = {
+              css = { validate = true, lint = {
+                unknownAtRules = "ignore",
+              } },
+              scss = { validate = true, lint = {
+                unknownAtRules = "ignore",
+              } },
+              less = { validate = true, lint = {
+                unknownAtRules = "ignore",
+              } },
+            },
+          },
           eslint = {
             autostart = false,
             cmd = { "vscode-eslint-language-server", "--stdio", "--max-old-space-size=12288" },
