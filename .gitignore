@@ -22,3 +22,6 @@ home/.ssh/*.pub
 .env.*
 credentials.json
 secrets.json
+
+# Neovim lazy lockfile
+home/.config/nvim/lazy-lock.json

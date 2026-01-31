@@ -95,10 +95,15 @@ update_packages() {
     run "mise upgrade"
   fi
   
-  # Update Oh My Zsh
-  if [[ -d "${HOME}/.oh-my-zsh" ]]; then
-    echo "  Updating Oh My Zsh..."
-    run "cd ${HOME}/.oh-my-zsh && git pull"
+  # Update Zsh plugins
+  local plugin_dir="${HOME}/.zsh/plugins"
+  if [[ -d "$plugin_dir" ]]; then
+    for plugin in "$plugin_dir"/*; do
+      if [[ -d "$plugin/.git" ]]; then
+        echo "  Updating Zsh plugin: $(basename "$plugin")"
+        run "cd $plugin && git pull"
+      fi
+    done
   fi
   
   echo "  Package update complete"

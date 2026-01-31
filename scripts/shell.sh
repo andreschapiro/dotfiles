@@ -12,14 +12,10 @@ setup_zsh() {
     return 1
   fi
 
-  # Install Oh My Zsh if not already installed (check for the main script file)
-  if [[ ! -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]]; then
-    echo "  Installing Oh My Zsh..."
-    # Remove incomplete installation if it exists
-    [[ -d "$HOME/.oh-my-zsh" ]] && rm -rf "$HOME/.oh-my-zsh"
-    run 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended'
-  else
-    echo "  ✓ Oh My Zsh already installed"
+  # Plugin install directory
+  local plugin_dir="$HOME/.zsh/plugins"
+  if [[ ! -d "$plugin_dir" ]]; then
+    run "mkdir -p $plugin_dir"
   fi
 
   # Install Starship prompt (idempotent - only installs if not present)
@@ -31,7 +27,7 @@ setup_zsh() {
   fi
 
   # Install zsh-syntax-highlighting
-  local syntax_dir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+  local syntax_dir="$plugin_dir/zsh-syntax-highlighting"
   if [[ ! -d "$syntax_dir" ]]; then
     echo "  Installing zsh-syntax-highlighting..."
     run "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $syntax_dir"
@@ -40,7 +36,7 @@ setup_zsh() {
   fi
 
   # Install zsh-autosuggestions
-  local autosuggestions_dir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+  local autosuggestions_dir="$plugin_dir/zsh-autosuggestions"
   if [[ ! -d "$autosuggestions_dir" ]]; then
     echo "  Installing zsh-autosuggestions..."
     run "git clone https://github.com/zsh-users/zsh-autosuggestions $autosuggestions_dir"

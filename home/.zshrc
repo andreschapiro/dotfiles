@@ -5,26 +5,14 @@
 setopt CHASE_LINKS        # Resolve symlinks to their true values when changing directory
 setopt CHASE_DOTS         # Resolve .. to the physical parent directory
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-# Using Starship prompt instead of Oh My Zsh theme
-ZSH_THEME=""
+# Zsh plugins and completions
+ZSH_PLUGIN_DIR="$HOME/.zsh/plugins"
+ZSH_COMPLETION_DIR="$HOME/.zsh/completions"
 function t() {
   # Defaults to 3 levels deep, do more with `t 5` or `t 1`
   # pass additional args after
   tree -I '.git|node_modules|.DS_Store' --dirsfirst --filelimit 15 -L ${1:-3} -aC $2
 }
-# Set list of themes to load
-# Setting this variable when ZSH_THEME=random
-# cause zsh load theme from this variable instead of
-# looking in ~/.oh-my-zsh/themes/
-# An empty array have no effect
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -66,55 +54,25 @@ function t() {
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
+# Initialize completions
+if [[ ! -d "$ZSH_COMPLETION_DIR" ]]; then
+  mkdir -p "$ZSH_COMPLETION_DIR"
+fi
 
-# OS detection for plugins
-case "$(uname -s)" in
-  Darwin*)
-    # macOS-specific plugins (no z - using zoxide instead)
-    plugins=(
-      1password
-      git
-      zsh-syntax-highlighting
-      zsh-autosuggestions
-      zsh-bat
-      node
-      npm
-      wd
-      brew
-    )
-    ;;
-  Linux*)
-    # Linux-specific plugins (no brew, no z - using zoxide instead)
-    plugins=(
-      1password
-      git
-      zsh-syntax-highlighting
-      zsh-autosuggestions
-      node
-      npm
-      wd
-    )
-    ;;
-  *)
-    # Default plugins
-    plugins=(
-      git
-      zsh-syntax-highlighting
-      zsh-autosuggestions
-    )
-    ;;
-esac
+# npm completion
+if command -v npm &>/dev/null; then
+  if [[ ! -f "$ZSH_COMPLETION_DIR/_npm" ]]; then
+    npm completion zsh > "$ZSH_COMPLETION_DIR/_npm"
+  fi
+fi
 
-# Source Oh My Zsh if it exists
-if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
-  source $ZSH/oh-my-zsh.sh
-else
-  echo "Warning: Oh My Zsh not found at $ZSH/oh-my-zsh.sh"
-  echo "Run the setup script to install it: cd ~/dotfiles && ./setup.sh"
+fpath=("$ZSH_COMPLETION_DIR" $fpath)
+autoload -Uz compinit
+compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump"
+
+# 1Password CLI completion
+if command -v op &>/dev/null; then
+  eval "$(op completion zsh)"
 fi
 
 # User configuration
@@ -137,14 +95,11 @@ fi
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# ponedark_vividlugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# Set personal aliases. Aliases can be placed here.
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 # OS-specific configurations
 case "$(uname -s)" in
   Darwin*)
@@ -186,6 +141,11 @@ if command -v eza &>/dev/null; then
   alias la='eza --icons=always --group-directories-first -lha'
   alias lt='eza --icons=always --group-directories-first --tree --level=2'
   alias l='eza --icons=always --group-directories-first -lah'
+fi
+
+# bat (modern cat replacement)
+if command -v bat &>/dev/null; then
+  alias cat='bat'
 fi
 
 # fd (modern find replacement)
@@ -241,3 +201,12 @@ fi
 
 # opencode
 export PATH=$HOME/.opencode/bin:$PATH
+
+# Zsh plugins
+if [[ -f "$ZSH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
+  source "$ZSH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh"
+fi
+
+if [[ -f "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+  source "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi
