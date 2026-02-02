@@ -4,6 +4,8 @@ set -euo pipefail
 
 DOTS_FOLDER="${HOME}/dotfiles"
 DRY_RUN="${DRY_RUN:-false}"
+SERVER_INSTALL="${SERVER_INSTALL:-false}"
+export SERVER_INSTALL
 
 # 1Password SSH Agent (needed for private repo access)
 export SSH_AUTH_SOCK="${HOME}/.1password/agent.sock"
@@ -53,6 +55,7 @@ usage() {
   echo ""
   echo "Commands:"
   echo "  (none)      Full setup: clean, packages, fonts, shell, stow"
+  echo "  server      Server setup: packages (no GUI), shell, stow (server configs)"
   echo "  clean       Check for and clean dangling configs"
   echo "  backup      Backup current configurations"
   echo "  update      Update packages (brew/pacman, mise)"
@@ -90,6 +93,38 @@ full_setup() {
   echo "==> Setup complete!"
 }
 
+# Server setup (headless Arch Linux)
+server_setup() {
+  echo "==> Starting server setup for Arch Linux"
+  echo ""
+  
+  SERVER_INSTALL="true"
+  export SERVER_INSTALL
+  
+  # Clean dangling configs first
+  clean_dangling_configs
+  
+  # Setup filesystem
+  setup_filesystem
+  
+  # Server-specific packages (includes Docker, Tailscale, etc.)
+  setup_server_packages
+  
+  # Shell setup
+  setup_zsh
+  
+  # Stow configs (will use server-specific paths)
+  stow_configs
+  
+  echo ""
+  echo "==> Server setup complete!"
+  echo ""
+  echo "Next steps:"
+  echo "  1. Add your public key to ~/.ssh/authorized_keys"
+  echo "  2. Configure Tailscale: sudo tailscale up"
+  echo "  3. Start Docker: sudo systemctl enable --now docker"
+}
+
 # Main
 main() {
   local command="${1:-}"
@@ -97,6 +132,13 @@ main() {
   detected_os=$(detect_os)
   
   case "$command" in
+    server)
+      if [[ "$detected_os" != "arch" ]]; then
+        echo "Error: Server setup is only supported on Arch Linux"
+        exit 1
+      fi
+      server_setup
+      ;;
     clean)
       clean_dangling_configs
       ;;
