@@ -201,7 +201,7 @@ fi
 
 # opencode
 export PATH=$HOME/.opencode/bin:$PATH
-<<<<<<< HEAD
+export PATH="$HOME/.cache/.bun/bin:$PATH"
 
 # Zsh plugins
 if [[ -f "$ZSH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
@@ -211,6 +211,3 @@ fi
 if [[ -f "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
   source "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
-=======
-export PATH="$HOME/.cache/.bun/bin:$PATH"
->>>>>>> 888bd50 (Spellcheck updates)
