@@ -118,6 +118,16 @@ setup_server_packages() {
     git
     wget
     curl
+    # Build dependencies for mise runtimes (Ruby, Python, etc.)
+    openssl        # Required by Ruby, Python, Node
+    readline       # Required by Ruby, Python
+    zlib           # Required by Ruby, Python
+    libyaml        # Required by Ruby
+    libffi         # Required by Ruby, Python
+    sqlite         # Required by Python
+    xz             # Required by Python
+    tk             # Required by Python (tkinter)
+    bzip2          # Required by Python
   )
   
   echo "  Installing base development packages..."
