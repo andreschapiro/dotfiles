@@ -286,17 +286,15 @@ install_ghostty_terminfo() {
     run "sudo pacman -S --noconfirm ncurses"
   fi
   
-  # Download and compile Ghostty terminfo
-  local tmp_file=$(mktemp)
-  curl -fsSL https://raw.githubusercontent.com/ghostty-org/ghostty/main/src/terminfo/ghostty.terminfo -o "$tmp_file"
+  # Install from dotfiles terminfo directory
+  local terminfo_file="${DOTS_FOLDER}/terminfo/xterm-ghostty.terminfo"
   
-  if [[ -s "$tmp_file" ]]; then
-    run "tic -x $tmp_file"
-    rm -f "$tmp_file"
+  if [[ -f "$terminfo_file" ]]; then
+    run "tic -x $terminfo_file"
     echo "  Ghostty terminfo installed successfully"
   else
-    echo "  Warning: Failed to download Ghostty terminfo"
-    rm -f "$tmp_file"
+    echo "  Warning: Ghostty terminfo not found at $terminfo_file"
+    echo "  Run 'infocmp -x xterm-ghostty > terminfo/xterm-ghostty.terminfo' on a machine with Ghostty"
     return 1
   fi
 }
