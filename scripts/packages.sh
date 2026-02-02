@@ -217,6 +217,9 @@ setup_server_packages() {
     fi
   done
   
+  # Install Ghostty terminfo (for SSH from Ghostty terminal)
+  install_ghostty_terminfo
+  
   # Enable and start services
   echo "  Enabling services..."
   run "sudo systemctl enable --now sshd"
@@ -266,6 +269,36 @@ install_yay() {
   run "cd $tmp_dir/yay && makepkg -si --noconfirm"
   run "rm -rf $tmp_dir"
   echo "  yay installed successfully"
+}
+
+# Install Ghostty terminfo for proper terminal support when SSH'ing from Ghostty
+install_ghostty_terminfo() {
+  # Check if already installed
+  if infocmp xterm-ghostty &>/dev/null 2>&1; then
+    echo "  Already installed: ghostty terminfo"
+    return 0
+  fi
+  
+  echo "  Installing Ghostty terminfo..."
+  
+  # Ensure ncurses is installed (provides tic)
+  if ! command -v tic &>/dev/null; then
+    run "sudo pacman -S --noconfirm ncurses"
+  fi
+  
+  # Download and compile Ghostty terminfo
+  local tmp_file=$(mktemp)
+  curl -fsSL https://raw.githubusercontent.com/ghostty-org/ghostty/main/src/terminfo/ghostty.terminfo -o "$tmp_file"
+  
+  if [[ -s "$tmp_file" ]]; then
+    run "tic -x $tmp_file"
+    rm -f "$tmp_file"
+    echo "  Ghostty terminfo installed successfully"
+  else
+    echo "  Warning: Failed to download Ghostty terminfo"
+    rm -f "$tmp_file"
+    return 1
+  fi
 }
 
 setup_mac_packages() {
