@@ -11,8 +11,12 @@ ZSH_COMPLETION_DIR="$HOME/.zsh/completions"
 function t() {
   # Defaults to 3 levels deep, do more with `t 5` or `t 1`
   # pass additional args after
-  tree -I '.git|node_modules|.DS_Store' --dirsfirst --filelimit 15 -L ${1:-3} -aC $2
+  eza --tree --level=${1:-3} --icons=always --group-directories-first -a --ignore-glob='.git|node_modules|.DS_Store' ${@:2}
 }
+
+# oh-my-zsh compatibility aliases
+alias lsa='eza --icons=always --group-directories-first -lah'
+alias tree='eza --tree --icons=always --group-directories-first'
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
