@@ -19,6 +19,7 @@
 # Format - two line prompt with newline before
 format = """
 $os\
+$hostname\
 $directory\
 $git_branch\
 $git_status\
@@ -37,6 +38,13 @@ format = '[$symbol](#B4B7CF) '
 Arch = ""
 Macos = ""
 Linux = ""
+
+# Hostname
+[hostname]
+ssh_only = false
+format = '[$hostname]($style) '
+style = '#c678dd bold'
+disabled = false
 
 # Directory
 [directory]

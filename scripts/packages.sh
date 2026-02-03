@@ -84,6 +84,8 @@ setup_arch_packages() {
     github-cli     # GitHub CLI (gh)
     luarocks       # Lua package manager (for neovim plugins)
     fontconfig     # Font configuration
+    # Networking
+    tailscale      # Mesh VPN
   )
   
   for package in "${packages[@]}"; do
@@ -94,6 +96,14 @@ setup_arch_packages() {
       run "sudo pacman -S --noconfirm $package"
     fi
   done
+  
+  # Enable Tailscale daemon
+  if systemctl is-enabled tailscaled &>/dev/null; then
+    echo "  Already enabled: tailscaled"
+  else
+    echo "  Enabling Tailscale daemon..."
+    run "sudo systemctl enable --now tailscaled"
+  fi
   
   # Install mise for runtime management
   install_mise

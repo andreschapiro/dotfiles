@@ -130,10 +130,13 @@ server_setup() {
   echo ""
   echo "==> Server setup complete!"
   echo ""
+  echo "Services enabled (start on boot): sshd, docker, tailscaled, cronie"
+  echo ""
   echo "Next steps:"
   echo "  1. Add your public key to ~/.ssh/authorized_keys"
-  echo "  2. Configure Tailscale: sudo tailscale up"
-  echo "  3. Start Docker: sudo systemctl enable --now docker"
+  echo "     curl https://github.com/YOUR_USERNAME.keys >> ~/.ssh/authorized_keys"
+  echo "  2. Authenticate Tailscale: sudo tailscale up"
+  echo "  3. Log out and back in for docker group membership to take effect"
 }
 
 # Main
