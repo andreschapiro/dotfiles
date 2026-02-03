@@ -18,6 +18,7 @@ source scripts/shell.sh
 source scripts/stow.sh
 source scripts/clean.sh
 source scripts/maintenance.sh
+source scripts/network.sh
 
 # OS Detection
 detect_os() {
@@ -60,6 +61,8 @@ usage() {
   echo "  backup      Backup current configurations"
   echo "  update      Update packages (brew/pacman, mise)"
   echo "  uninstall   Remove symlinks created by stow"
+  echo "  wol         Enable Wake on LAN for all network interfaces"
+  echo "  wol-status  Show Wake on LAN status for all interfaces"
   echo ""
   echo "Environment variables:"
   echo "  DRY_RUN=true  Show commands without executing"
@@ -89,6 +92,11 @@ full_setup() {
   setup_zsh
   stow_configs
   
+  # Enable Wake on LAN for network interfaces (Linux only)
+  if [[ "$os" != "macos" ]]; then
+    enable_wake_on_lan
+  fi
+  
   echo ""
   echo "==> Setup complete!"
 }
@@ -115,6 +123,9 @@ server_setup() {
   
   # Stow configs (will use server-specific paths)
   stow_configs
+  
+  # Enable Wake on LAN for network interfaces
+  enable_wake_on_lan
   
   echo ""
   echo "==> Server setup complete!"
@@ -150,6 +161,20 @@ main() {
       ;;
     uninstall)
       uninstall_dotfiles
+      ;;
+    wol)
+      if [[ "$detected_os" == "macos" ]]; then
+        echo "Error: Wake on LAN setup is only supported on Linux"
+        exit 1
+      fi
+      enable_wake_on_lan
+      ;;
+    wol-status)
+      if [[ "$detected_os" == "macos" ]]; then
+        echo "Error: Wake on LAN status is only supported on Linux"
+        exit 1
+      fi
+      show_wol_status
       ;;
     help|--help|-h)
       usage
