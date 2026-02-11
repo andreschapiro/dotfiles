@@ -215,6 +215,7 @@ setup_server_packages() {
   # Install AUR packages
   local aur_packages=(
     lazydocker     # TUI for Docker management
+    1password-cli  # 1Password CLI (op)
   )
   
   echo "  Installing packages from AUR..."
