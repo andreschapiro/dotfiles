@@ -215,3 +215,9 @@ fi
 if [[ -f "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
   source "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
+
+# Keep standard shell navigation shortcuts in all editing modes.
+bindkey '^A' beginning-of-line
+bindkey '^E' end-of-line
+bindkey -M viins '^A' beginning-of-line
+bindkey -M viins '^E' end-of-line

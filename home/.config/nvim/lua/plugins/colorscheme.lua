@@ -1,5 +1,5 @@
 -- Try to load omarchy theme first, fallback to onedark if not available
-local omarchy_theme_path = "/home/andy/.config/omarchy/current/theme/neovim.lua"
+local omarchy_theme_path = (os.getenv("HOME") or "") .. "/.config/omarchy/current/theme/neovim.lua"
 local file = io.open(omarchy_theme_path, "r")
 if file then
   file:close()

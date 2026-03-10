@@ -19,7 +19,7 @@ font-thicken-strength = 50
 bold-is-bright = true
 
 #theme
-theme = omarchy
+config-file = ../omarchy/current/theme/ghostty.conf
 
 
 #window
