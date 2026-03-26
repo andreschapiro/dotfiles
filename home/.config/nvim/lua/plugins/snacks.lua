@@ -208,6 +208,14 @@ return {
       end,
       desc = "Toggle Inlay Hints",
     },
+    -- Pick colorscheme (preview + persist)
+    {
+      "<leader>uC",
+      function()
+        require("config.colorscheme_picker").pick()
+      end,
+      desc = "Select Colorscheme",
+    },
     -- Picker keymaps
     -- File pickers
     {

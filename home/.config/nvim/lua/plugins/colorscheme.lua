@@ -62,6 +62,7 @@ return {
           ellipsis = "require('onedarkpro.helpers').lighten('bg', 4, 'onedark_dark')",
           picker_results = "require('onedarkpro.helpers').darken('bg', 4, 'onedark_dark')",
           picker_selection = "require('onedarkpro.helpers').darken('bg', 8, 'onedark_dark')",
+          picker_input = "require('onedarkpro.helpers').lighten('bg', 4, 'onedark_dark')",
           copilot = "require('onedarkpro.helpers').darken('gray', 8, 'onedark_dark')",
           breadcrumbs = "require('onedarkpro.helpers').darken('gray', 10, 'onedark_dark')",
           light_gray = "require('onedarkpro.helpers').darken('gray', 7, 'onedark_dark')",
@@ -73,6 +74,7 @@ return {
           ellipsis = "#808080",
           picker_results = "require('onedarkpro.helpers').darken('bg', 5, 'onelight')",
           picker_selection = "require('onedarkpro.helpers').darken('bg', 9, 'onelight')",
+          picker_input = "require('onedarkpro.helpers').darken('bg', 2, 'onelight')",
           copilot = "require('onedarkpro.helpers').lighten('gray', 8, 'onelight')",
           breadcrumbs = "require('onedarkpro.helpers').lighten('gray', 8, 'onelight')",
           light_gray = "require('onedarkpro.helpers').lighten('gray', 10, 'onelight')",
@@ -183,6 +185,6 @@ return {
         cursorline = true,
       },
     })
-    vim.cmd.colorscheme("vaporwave")
+    require("config.colorscheme_picker").apply_saved_or("vaporwave")
   end,
 }

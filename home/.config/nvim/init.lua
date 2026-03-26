@@ -9,6 +9,11 @@ require("config.lazy")
 vim.api.nvim_create_autocmd("User", {
   pattern = "VeryLazy",
   callback = function()
+    local colors = require("config.colorscheme_picker")
+    local saved = colors.get_saved()
+    if saved and vim.g.colors_name ~= saved then
+      colors.apply(saved)
+    end
     require("config.keymaps")
     require("config.autocmds")
   end,
