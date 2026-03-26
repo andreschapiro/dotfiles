@@ -3,16 +3,9 @@ return {
   priority = 1000,
   lazy = false,
   opts = {
-    -- Indent guides with scope highlighting
+    -- Indent guides (use Snacks/LazyVim default visuals)
     indent = {
       enabled = true,
-      char = "│",
-      blank = " ",
-      scope = {
-        enabled = true,
-        char = "│",
-        underline = true,
-      },
     },
     -- Smart buffer deletion
     bufdelete = { enabled = true },

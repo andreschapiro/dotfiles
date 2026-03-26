@@ -57,7 +57,7 @@ vo.laststatus = 3 -- Use global statusline
 
 -- Sets how Neovim will display certain whitespace characters in the editor
 vo.list = true
-vo.listchars = { trail = "·", nbsp = "␣" }
+vo.listchars = { tab = "  ", trail = "·", nbsp = "␣" }
 
 -- Ensure tabs are converted to spaces
 vim.opt.expandtab = true
