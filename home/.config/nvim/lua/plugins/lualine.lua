@@ -143,52 +143,6 @@ return {
           },
         },
         lualine_x = {
-          -- NES Status indicator
-          {
-            function()
-              local ok, nes = pcall(require, "sidekick.nes")
-              if not ok then
-                return ""
-              end
-
-              -- Check the enabled property (it's a boolean, not a function)
-              if nes.enabled then
-                return "  NES"
-              else
-                return "  NES"
-              end
-            end,
-            cond = function()
-              local ok, nes = pcall(require, "sidekick.nes")
-              return ok and nes.did_setup == true
-            end,
-            separator = {
-              left = "",
-              right = "\u{e0b3}", -- Separator after NES
-            },
-            color = function()
-              local ok, nes = pcall(require, "sidekick.nes")
-              if not ok then
-                return { fg = get_hl_hex("Comment", "fg"), bg = get_hl_hex("lualine_c_normal", "bg") }
-              end
-
-              -- Check the enabled property (it's a boolean, not a function)
-              -- Use yellow color for NES
-              if nes.enabled then
-                return { fg = get_hl_hex("DiagnosticWarn", "fg"), bg = get_hl_hex("lualine_c_normal", "bg") }
-              else
-                return { fg = get_hl_hex("Comment", "fg"), bg = get_hl_hex("lualine_c_normal", "bg") }
-              end
-            end,
-            on_click = function()
-              local ok, nes = pcall(require, "sidekick.nes")
-              if ok then
-                nes.toggle()
-                -- Force statusline refresh
-                vim.cmd("redrawstatus")
-              end
-            end,
-          },
           -- Lazy updates
           {
             require("lazy.status").updates,

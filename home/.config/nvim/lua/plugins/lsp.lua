@@ -47,8 +47,8 @@ return {
           prettierd = { enabled = false },
           -- Actual LSP servers
           bashls = {},
-          biome = {},
-          copilot = {}, -- Copilot LSP for sidekick.nvim NES
+          biome = { enabled = false },
+          copilot = {},
           cssls = {
             settings = {
               css = { validate = true, lint = {
@@ -62,11 +62,7 @@ return {
               } },
             },
           },
-          eslint = {
-            autostart = false,
-            cmd = { "vscode-eslint-language-server", "--stdio", "--max-old-space-size=12288" },
-            settings = { format = false },
-          },
+          eslint = { enabled = false },
           gopls = {
             settings = {
               gopls = {
@@ -103,7 +99,7 @@ return {
           tailwindcss = {
             filetypes = { "typescriptreact", "javascriptreact", "html", "astro" },
           },
-          -- ts_ls disabled in favor of vtsls (configured in typescript.lua)
+          -- ts/js servers configured in typescript.lua (tsgo + oxlint)
           yamlls = {},
           zls = {},
           rust_analyzer = {
@@ -244,9 +240,7 @@ return {
       local mason_all = have_mason
           and {
             "bashls",
-            "biome",
             "cssls",
-            "eslint",
             "gopls",
             "html",
             "jsonls",
@@ -254,7 +248,8 @@ return {
             "marksman",
             "rust_analyzer",
             "tailwindcss",
-            "vtsls", -- Better TypeScript LSP (replaces ts_ls)
+            "tsgo",
+            "oxlint",
             "yamlls",
           }
         or {}
@@ -304,7 +299,8 @@ return {
       ui = { border = "rounded" },
       ensure_installed = {
         "stylua",
-        "prettierd",
+        "oxfmt",
+        "oxlint",
         "shfmt",
       },
     },

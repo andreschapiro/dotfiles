@@ -24,16 +24,7 @@ return {
       ["<C-f>"] = { "scroll_documentation_down", "fallback" },
       ["<Tab>"] = {
         function(cmp)
-          -- Check for sidekick NES first (highest priority)
-          local ok_nes, nes = pcall(require, "sidekick.nes")
-          if ok_nes and nes.have() then
-            local ok_sidekick, sidekick = pcall(require, "sidekick")
-            if ok_sidekick and sidekick.nes_jump_or_apply() then
-              return true -- handled
-            end
-          end
-
-          -- Then check if blink menu is visible
+          -- Check if blink menu is visible
           if cmp.is_visible() then
             return cmp.select_next()
           else
@@ -115,7 +106,7 @@ return {
         },
       },
       ghost_text = {
-        enabled = false, -- Disable to avoid conflicts with Sidekick NES
+        enabled = false,
       },
     },
 

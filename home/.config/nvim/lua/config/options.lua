@@ -110,7 +110,7 @@ vo.undofile = true -- Maintain undo history between sessions
 vo.sessionoptions = "buffers,curdir,folds,help,tabpages,winsize,winpos"
 
 -- Window options
-vw.colorcolumn = "80,120" -- Make a ruler at 80px and 120px
+vw.colorcolumn = "" -- Disable ruler columns
 vw.number = true -- Set the absolute number
 vw.relativenumber = true -- Set the relative number
 vw.signcolumn = "yes" -- Show information next to the line numbers

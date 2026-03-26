@@ -4,20 +4,6 @@ return {
     "folke/sidekick.nvim",
     event = "VeryLazy",
     init = function()
-      -- Create a command to debug NES status
-      vim.api.nvim_create_user_command("SidekickDebugNES", function()
-        local ok, nes = pcall(require, "sidekick.nes")
-        if not ok then
-          vim.notify("Failed to load sidekick.nes: " .. tostring(nes), vim.log.levels.ERROR)
-          return
-        end
-        
-        -- Check the enabled property (it's a boolean, not a function)
-        local is_enabled = nes.enabled
-        
-        vim.notify(string.format("NES Status:\n- Loaded: %s\n- Enabled: %s", ok, is_enabled), vim.log.levels.INFO)
-      end, { desc = "Debug NES status" })
-      
       -- Create a command to list and kill dangling AI CLI sessions
       vim.api.nvim_create_user_command("SidekickKillSession", function(opts)
         local tool_name = opts.args
@@ -116,29 +102,6 @@ return {
       end, { desc = "Authenticate with GitHub Copilot" })
     end,
     opts = {
-      -- add any options here
-      nes = {
-        -- Enable NES, but check if user has refused the current suggestion
-        enabled = function(buf)
-          return vim.b[buf].nes_refused ~= true
-        end,
-        debounce = 200, -- Wait 200ms after typing before triggering NES
-        trigger = {
-          -- Trigger NES in more situations, including while in insert mode
-          events = { 
-            "ModeChanged i:n",  -- When leaving insert mode
-            "TextChanged",       -- When text changes in normal mode
-            "CursorHold",        -- When cursor is idle in normal mode
-            "CursorHoldI",       -- When cursor is idle in insert mode (KEY for insert mode!)
-            "User SidekickNesDone" -- After applying an edit
-          },
-        },
-        clear = {
-          -- Clear suggestions when actively typing or moving in insert mode
-          events = { "TextChangedI" },
-          esc = false, -- We'll handle Esc manually to prevent re-triggering
-        },
-      },
       cli = {
         mux = {
           backend = "tmux",
@@ -154,95 +117,6 @@ return {
     },
     keys = {
       -- Note: Tab is handled in completion.lua to integrate with nvim-cmp
-      {
-        "<S-Tab>",
-        function()
-          -- Shift+Tab: refuse NES and insert a real tab
-          local nes = require("sidekick.nes")
-          if nes.have() then
-            nes.clear()
-            -- Temporarily disable NES to prevent re-triggering
-            vim.b.nes_refused = true
-            vim.defer_fn(function()
-              vim.b.nes_refused = false
-            end, 10000) -- Re-enable after 10 seconds when refused
-          end
-          -- Return empty string to not insert anything extra, just the cleared state
-          -- Then manually insert tab/spaces
-          if vim.bo.expandtab then
-            return string.rep(" ", vim.bo.shiftwidth)
-          else
-            return "\t"
-          end
-        end,
-        mode = { "i" },
-        expr = true,
-        replace_keycodes = false,
-        desc = "Refuse NES and insert Tab",
-      },
-      {
-        "<Esc>",
-        function()
-          -- Clear NES and prevent re-triggering when explicitly refusing with Esc
-          local nes = require("sidekick.nes")
-          if nes.have() then
-            nes.clear()
-            -- Temporarily disable NES to prevent the same suggestion from coming back
-            vim.b.nes_refused = true
-            vim.defer_fn(function()
-              vim.b.nes_refused = false
-            end, 10000) -- Re-enable after 10 seconds when refused
-          end
-          -- Normal Esc behavior
-          return "<Esc>"
-        end,
-        mode = { "i" },
-        expr = true,
-        desc = "Clear NES and exit insert mode",
-      },
-      {
-        "<leader>tn",
-        function()
-          require("sidekick.nes").toggle()
-        end,
-        desc = "Toggle AI NES",
-      },
-      {
-        "<leader>an",
-        function()
-          local nes = require("sidekick.nes")
-          nes.toggle()
-          
-          -- Refresh statusline to show new status
-          vim.cmd("redrawstatus")
-          
-          -- Show clear status notification with icon
-          vim.defer_fn(function()
-            -- Check the enabled property (it's a boolean, not a function)
-            local is_enabled = nes.enabled
-            if is_enabled then
-              vim.notify("  NES Enabled", vim.log.levels.INFO, { title = "Sidekick NES" })
-            else
-              vim.notify("  NES Disabled", vim.log.levels.WARN, { title = "Sidekick NES" })
-            end
-          end, 50)
-        end,
-        desc = "Toggle AI NES",
-      },
-      {
-        "<C-x>",
-        function()
-          local nes = require("sidekick.nes")
-          nes.clear()
-          -- Temporarily disable to prevent re-triggering
-          vim.b.nes_refused = true
-          vim.defer_fn(function()
-            vim.b.nes_refused = false
-          end, 10000) -- Re-enable after 10 seconds when refused
-        end,
-        mode = { "i", "n" },
-        desc = "Refuse/Clear NES Suggestion",
-      },
       {
         "<c-.>",
         function()
