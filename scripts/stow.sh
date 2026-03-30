@@ -27,6 +27,7 @@ MANAGED_PATHS_SERVER=(
   ".config/nvim"
   ".config/tmux"
   ".config/opencode"
+  ".config/systemd/user/opencode-web.service"
   ".config/git"
   ".config/starship.toml"
   ".zshrc"

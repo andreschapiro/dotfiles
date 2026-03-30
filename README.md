@@ -23,6 +23,18 @@ cd ~/dotfiles
 | `./setup.sh update`    | Update packages (brew/pacman, mise)             |
 | `./setup.sh uninstall` | Remove symlinks                                 |
 
+### OpenClaw (AI Assistant)
+
+OpenClaw is a personal AI assistant - see [OPENCLAW.md](OPENCLAW.md) for full documentation.
+
+| Command                         | Description                              |
+| ------------------------------- | ---------------------------------------- |
+| `./openclaw-setup.sh install`   | Install OpenClaw and setup daemon        |
+| `./openclaw-setup.sh status`    | Check OpenClaw installation and health   |
+| `./openclaw-setup.sh update`    | Update OpenClaw to latest version        |
+| `./openclaw-setup.sh uninstall` | Remove OpenClaw (keeps config)           |
+| `./openclaw-setup.sh help`      | Show OpenClaw commands and docs          |
+
 ### Dry Run
 
 Preview what will happen without making changes:

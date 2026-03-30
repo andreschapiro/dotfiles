@@ -1,0 +1,40 @@
+{
+  "agent": {
+    "model": "anthropic/claude-opus-4-5"
+  },
+  "gateway": {
+    "port": 18789,
+    "bind": "loopback",
+    "auth": {
+      "mode": "token"
+    }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": false,
+      "botToken": "YOUR_TELEGRAM_BOT_TOKEN",
+      "allowFrom": []
+    },
+    "slack": {
+      "enabled": false,
+      "botToken": "YOUR_SLACK_BOT_TOKEN",
+      "appToken": "YOUR_SLACK_APP_TOKEN"
+    },
+    "discord": {
+      "enabled": false,
+      "token": "YOUR_DISCORD_BOT_TOKEN"
+    },
+    "whatsapp": {
+      "enabled": false,
+      "allowFrom": []
+    }
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "~/.openclaw/workspace",
+      "sandbox": {
+        "mode": "non-main"
+      }
+    }
+  }
+}

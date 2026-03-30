@@ -11,6 +11,7 @@ local ensure_installed = {
   "luadoc",
   "markdown",
   "markdown_inline",
+  "mdx",
   "python",
   "query",
   "rust",

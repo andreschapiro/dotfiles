@@ -206,6 +206,7 @@ fi
 # opencode
 export PATH=$HOME/.opencode/bin:$PATH
 export PATH="$HOME/.cache/.bun/bin:$PATH"
+export PATH="$HOME/.bun/bin:$PATH"
 
 # Zsh plugins
 if [[ -f "$ZSH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then

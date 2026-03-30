@@ -26,6 +26,10 @@ fi
 # Add local bin to PATH
 export PATH=$HOME/.local/bin:$PATH
 
+# pnpm global bin
+export PNPM_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
 # History settings
 export HISTSIZE=10000
 export HISTFILESIZE=20000
@@ -104,4 +108,3 @@ fi
 if [[ -f ~/.bashrc.local ]]; then
   source ~/.bashrc.local
 fi
-

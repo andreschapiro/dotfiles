@@ -123,6 +123,9 @@ server_setup() {
   
   # Stow configs (will use server-specific paths)
   stow_configs
+
+  # Configure and start OpenCode Web UI service
+  setup_opencode_webui_service
   
   # Enable Wake on LAN for network interfaces
   enable_wake_on_lan
@@ -130,13 +133,35 @@ server_setup() {
   echo ""
   echo "==> Server setup complete!"
   echo ""
-  echo "Services enabled (start on boot): sshd, docker, tailscaled, cronie"
+  echo "Services enabled (start on boot): sshd, docker, tailscaled, cronie, opencode-web"
   echo ""
   echo "Next steps:"
   echo "  1. Add your public key to ~/.ssh/authorized_keys"
   echo "     curl https://github.com/YOUR_USERNAME.keys >> ~/.ssh/authorized_keys"
   echo "  2. Authenticate Tailscale: sudo tailscale up"
   echo "  3. Log out and back in for docker group membership to take effect"
+}
+
+setup_opencode_webui_service() {
+  echo "==> Configuring OpenCode Web UI service"
+
+  # Ensure the user systemd directory exists (service file is stowed from home-server/)
+  run "mkdir -p \"${HOME}/.config/systemd/user\""
+
+  # Keep user services running at boot even without an interactive login
+  local linger_enabled
+  linger_enabled=$(loginctl show-user "$USER" -p Linger --value 2>/dev/null || true)
+  if [[ "$linger_enabled" != "yes" ]]; then
+    echo "  Enabling systemd user lingering for $USER..."
+    run "sudo loginctl enable-linger \"$USER\""
+  else
+    echo "  Already enabled: linger for $USER"
+  fi
+
+  run "systemctl --user daemon-reload"
+  run "systemctl --user enable --now opencode-web.service"
+
+  echo "  OpenCode Web UI service is enabled and running"
 }
 
 # Main

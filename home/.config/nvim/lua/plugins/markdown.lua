@@ -15,4 +15,8 @@ return {
 		},
 		ft = { "markdown", "norg", "rmd", "org" },
 	},
+	{
+		"davidmh/mdx.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+	},
 }
