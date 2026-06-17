@@ -12,9 +12,12 @@ MANAGED_PATHS=(
   ".config/new-nvim"
   ".config/tmux"
   ".config/opencode"
+  ".config/pnpm"
   ".config/git"
   ".config/fontconfig"
   ".config/starship.toml"
+  ".npmrc"
+  ".bunfig.toml"
   ".zshrc"
   ".zshenv"
   ".bashrc"
@@ -28,8 +31,11 @@ MANAGED_PATHS_SERVER=(
   ".config/tmux"
   ".config/opencode"
   ".config/systemd/user/opencode-web.service"
+  ".config/pnpm"
   ".config/git"
   ".config/starship.toml"
+  ".npmrc"
+  ".bunfig.toml"
   ".zshrc"
   ".zshenv"
   ".bashrc"
@@ -115,7 +121,7 @@ stow_configs() {
   if [[ "${SERVER_INSTALL:-false}" == "true" ]]; then
     echo "  Stowing shared configs from home/..."
     # Stow specific shared directories that server needs but aren't duplicated
-    for shared_path in ".config/nvim" ".config/tmux" ".config/opencode" ".config/git" ".config/starship.toml" ".zshrc" ".zshenv" ".bashrc" ".vimrc" ".p10k.zsh"; do
+    for shared_path in ".config/nvim" ".config/tmux" ".config/opencode" ".config/pnpm" ".config/git" ".config/starship.toml" ".npmrc" ".bunfig.toml" ".zshrc" ".zshenv" ".bashrc" ".vimrc" ".p10k.zsh"; do
       if [[ -e "${DOTS_FOLDER}/home/${shared_path}" ]] && [[ ! -e "${DOTS_FOLDER}/home-server/${shared_path}" ]]; then
         # Only stow if not already in home-server
         local target="${HOME}/${shared_path}"

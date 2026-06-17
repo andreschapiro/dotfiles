@@ -21,8 +21,11 @@ backup_configs() {
     .config/ghostty
     .config/tmux
     .config/opencode
+    .config/pnpm
     .config/git
     .config/starship.toml
+    .npmrc
+    .bunfig.toml
   )
   
   for config in "${configs[@]}"; do
@@ -94,7 +97,7 @@ update_packages() {
     run "mise self-update"
     run "mise upgrade"
   fi
-  
+
   # Update Zsh plugins
   local plugin_dir="${HOME}/.zsh/plugins"
   if [[ -d "$plugin_dir" ]]; then
@@ -118,9 +121,12 @@ uninstall_dotfiles() {
     "${HOME}/.config/nvim"
     "${HOME}/.config/tmux"
     "${HOME}/.config/opencode"
+    "${HOME}/.config/pnpm"
     "${HOME}/.config/git"
     "${HOME}/.config/fontconfig"
     "${HOME}/.config/starship.toml"
+    "${HOME}/.npmrc"
+    "${HOME}/.bunfig.toml"
     "${HOME}/.ssh"
     "${HOME}/.zshrc"
     "${HOME}/.zshenv"

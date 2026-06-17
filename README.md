@@ -23,17 +23,21 @@ cd ~/dotfiles
 | `./setup.sh update`    | Update packages (brew/pacman, mise)             |
 | `./setup.sh uninstall` | Remove symlinks                                 |
 
-### OpenClaw (AI Assistant)
+### AI Skills
 
-OpenClaw is a personal AI assistant - see [OPENCLAW.md](OPENCLAW.md) for full documentation.
+The setup script clones or updates a public, tool-agnostic skills repository at `~/ai-skills`, then installs its skills with `npx skills add`:
 
-| Command                         | Description                              |
-| ------------------------------- | ---------------------------------------- |
-| `./openclaw-setup.sh install`   | Install OpenClaw and setup daemon        |
-| `./openclaw-setup.sh status`    | Check OpenClaw installation and health   |
-| `./openclaw-setup.sh update`    | Update OpenClaw to latest version        |
-| `./openclaw-setup.sh uninstall` | Remove OpenClaw (keeps config)           |
-| `./openclaw-setup.sh help`      | Show OpenClaw commands and docs          |
+```bash
+AI_SKILLS_REPO=https://github.com/andreschapiro/ai-skills.git ./setup.sh
+```
+
+By default, skills are installed globally for OpenCode. To install into additional supported agents, set `AI_SKILLS_AGENTS` to a space-separated list:
+
+```bash
+AI_SKILLS_AGENTS="opencode claude-code codex" ./setup.sh
+```
+
+The source repository stays separate so other AI tools can consume the same files.
 
 ### Dry Run
 
@@ -62,16 +66,20 @@ DRY_RUN=true ./setup.sh
 │   │   ├── new-nvim/        # Neovim (custom config)
 │   │   ├── tmux/            # tmux
 │   │   ├── opencode/        # OpenCode AI
+│   │   ├── pnpm/            # pnpm package manager config
 │   │   ├── git/             # Git config
 │   │   ├── fontconfig/      # Font config (Linux only)
 │   │   ├── ssh/             # SSH config
 │   │   └── starship.toml    # Starship prompt
 │   ├── .zshrc               # Zsh configuration
 │   ├── .zshenv              # Zsh environment
+│   ├── .npmrc               # npm package manager config
+│   ├── .bunfig.toml         # Bun package manager config
 │   ├── .bashrc              # Bash configuration
 │   ├── .vimrc               # Vim configuration
 │   └── .p10k.zsh            # Powerlevel10k (legacy)
 ├── scripts/                 # Setup scripts (not stowed)
+│   ├── ai-skills.sh         # Public AI skills repo setup
 │   ├── packages.sh          # Package installation
 │   ├── fonts.sh             # Font installation
 │   ├── shell.sh             # Zsh/Oh My Zsh setup

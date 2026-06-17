@@ -6,15 +6,4 @@
     "webfetch": "allow",
     "doom_loop": "ask",
   },
-  "agent": {
-    "headless": {
-      "description": "Headless agent for OpenClaw automation",
-      "mode": "primary",
-      "permission": {
-        "edit": "allow",
-        "bash": "allow",
-        "webfetch": "allow",
-      },
-    },
-  },
 }

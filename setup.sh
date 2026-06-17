@@ -12,6 +12,7 @@ export SSH_AUTH_SOCK="${HOME}/.1password/agent.sock"
 
 # Source all scripts
 source scripts/filesystem.sh
+source scripts/ai-skills.sh
 source scripts/packages.sh
 source scripts/fonts.sh
 source scripts/shell.sh
@@ -90,6 +91,7 @@ full_setup() {
   fi
   
   setup_zsh
+  setup_ai_skills
   stow_configs
   
   # Enable Wake on LAN for network interfaces (Linux only)
@@ -120,7 +122,8 @@ server_setup() {
   
   # Shell setup
   setup_zsh
-  
+  setup_ai_skills
+
   # Stow configs (will use server-specific paths)
   stow_configs
 
