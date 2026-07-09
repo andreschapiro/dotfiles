@@ -145,7 +145,10 @@ main() {
     launch_server_session "$project"
   fi
 
-  exec ssh -t "$DEV_SERVER_HOST" "dev --server $(printf '%q' "$project")"
+  local quoted_project
+  quoted_project="$(printf '%q' "$project")"
+
+  exec ssh -t "$DEV_SERVER_HOST" "PATH=\"\$HOME/.local/bin:\$PATH\"; if command -v dev >/dev/null 2>&1; then exec dev --server ${quoted_project}; elif [ -x \"\$HOME/dotfiles/home/.local/bin/dev\" ]; then exec \"\$HOME/dotfiles/home/.local/bin/dev\" --server ${quoted_project}; else printf '%s\\n' 'dev is not installed on the server. Run: cd ~/dotfiles && ./setup.sh server' >&2; exit 127; fi"
 }
 
 main "$@"
