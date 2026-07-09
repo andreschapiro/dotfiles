@@ -18,6 +18,7 @@ backup_configs() {
     .bashrc
     .vimrc
     .config/nvim
+    .config/dev
     .config/ghostty
     .config/tmux
     .config/opencode
@@ -26,6 +27,7 @@ backup_configs() {
     .config/starship.toml
     .npmrc
     .bunfig.toml
+    .local/bin/dev
   )
   
   for config in "${configs[@]}"; do
@@ -118,6 +120,7 @@ uninstall_dotfiles() {
   # List of symlinks to remove
   local symlinks=(
     "${HOME}/.config/ghostty"
+    "${HOME}/.config/dev"
     "${HOME}/.config/nvim"
     "${HOME}/.config/tmux"
     "${HOME}/.config/opencode"
@@ -130,6 +133,7 @@ uninstall_dotfiles() {
     "${HOME}/.ssh"
     "${HOME}/.zshrc"
     "${HOME}/.zshenv"
+    "${HOME}/.local/bin/dev"
   )
   
   for link in "${symlinks[@]}"; do

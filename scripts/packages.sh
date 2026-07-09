@@ -19,6 +19,27 @@ install_mise() {
   echo "  mise installed successfully"
 }
 
+install_herdr_package() {
+  if command -v herdr &>/dev/null; then
+    echo "  Already installed: herdr"
+    return 0
+  fi
+
+  if command -v brew &>/dev/null; then
+    echo "  Installing herdr with Homebrew..."
+    run "brew install herdr"
+  elif command -v pacman &>/dev/null && pacman -Si herdr &>/dev/null; then
+    echo "  Installing herdr with pacman..."
+    run "sudo pacman -S --noconfirm herdr"
+  elif command -v yay &>/dev/null; then
+    echo "  Installing herdr with yay..."
+    run "yay -S --noconfirm herdr"
+  else
+    echo "  Warning: herdr package not available. Install herdr with your package manager."
+    return 1
+  fi
+}
+
 # Setup mise with common runtimes
 setup_mise_runtimes() {
   if ! command -v mise &>/dev/null; then
@@ -107,6 +128,7 @@ setup_arch_packages() {
   
   # Install mise for runtime management
   install_mise
+  install_herdr_package
   
   # Install opencode
   if ! command -v opencode &>/dev/null; then
@@ -253,6 +275,7 @@ setup_server_packages() {
   # Install mise for runtime management
   install_mise
   setup_mise_runtimes_full
+  install_herdr_package
   
   # Install opencode
   if ! command -v opencode &>/dev/null; then
@@ -355,6 +378,7 @@ setup_mac_packages() {
 
   # Install mise for runtime management
   install_mise
+  install_herdr_package
   
   # Install opencode
   if ! command -v opencode &>/dev/null; then
@@ -366,4 +390,3 @@ setup_mac_packages() {
   
   echo "  Package installation complete"
 }
-

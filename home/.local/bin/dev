@@ -1,0 +1,151 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+DEV_SERVER_HOST="${DEV_SERVER_HOST:-server-ssh-alias}"
+DEV_SERVER_MARKER_HOSTS="${DEV_SERVER_MARKER_HOSTS:-$DEV_SERVER_HOST}"
+DEV_PROJECT_ROOT="${DEV_PROJECT_ROOT:-${HOME}/Projects}"
+DEV_CONFIG_DIR="${DEV_CONFIG_DIR:-${HOME}/.config/dev}"
+DEV_PROJECT_CONFIG_DIR="${DEV_PROJECT_CONFIG_DIR:-${DEV_CONFIG_DIR}/projects}"
+
+usage() {
+  cat <<'EOF'
+Usage: dev [--server] <project>
+
+Launch a project development session.
+
+From a client machine, this SSHes to DEV_SERVER_HOST and runs the same command
+there. From the server, it opens a named Herdr session in ~/Projects/<project>.
+
+Project config:
+  ~/.config/dev/projects/<project>.conf
+
+Supported config variables:
+  PROJECT_PATH=/full/path/or/~/path
+  DEV_SESSION=custom-session-name
+  DEV_BOOTSTRAP=("command one" "command two")
+  DEV_BOOTSTRAP_ONCE=("command one" "command two")
+
+Environment overrides:
+  DEV_SERVER_HOST=server-ssh-alias
+  DEV_PROJECT_ROOT=~/Projects
+  DEV_SERVER_MARKER_HOSTS="server-hostname other-hostname"
+EOF
+}
+
+die() {
+  printf 'dev: %s\n' "$*" >&2
+  exit 1
+}
+
+expand_path() {
+  local path="$1"
+  case "$path" in
+    "~") printf '%s\n' "$HOME" ;;
+    "~/"*) printf '%s/%s\n' "$HOME" "${path#~/}" ;;
+    *) printf '%s\n' "$path" ;;
+  esac
+}
+
+is_server() {
+  [[ "${1:-}" == "--server" ]] && return 0
+  [[ -n "${DEV_FORCE_SERVER:-}" ]] && return 0
+
+  local host
+  host="$(hostname -s 2>/dev/null || hostname 2>/dev/null || true)"
+  for marker in $DEV_SERVER_MARKER_HOSTS; do
+    [[ "$host" == "$marker" ]] && return 0
+  done
+
+  return 1
+}
+
+load_project_config() {
+  local project="$1"
+  local config="${DEV_PROJECT_CONFIG_DIR}/${project}.conf"
+
+  PROJECT_PATH="${DEV_PROJECT_ROOT}/${project}"
+  DEV_SESSION="dev-${project}"
+  DEV_BOOTSTRAP=()
+  DEV_BOOTSTRAP_ONCE=()
+
+  if [[ -f "$config" ]]; then
+    # Project configs are trusted local shell snippets for maximum flexibility.
+    # shellcheck source=/dev/null
+    source "$config"
+  fi
+
+  PROJECT_PATH="$(expand_path "$PROJECT_PATH")"
+}
+
+run_bootstrap_commands() {
+  local project="$1"
+  local state_project="${project//\//_}"
+  local once_marker="${DEV_CONFIG_DIR}/state/${state_project}.bootstrapped"
+
+  mkdir -p "${DEV_CONFIG_DIR}/state"
+
+  if [[ ! -f "$once_marker" ]]; then
+    for command in "${DEV_BOOTSTRAP_ONCE[@]}"; do
+      (cd "$PROJECT_PATH" && eval "$command")
+    done
+    : > "$once_marker"
+  fi
+
+  for command in "${DEV_BOOTSTRAP[@]}"; do
+    (cd "$PROJECT_PATH" && eval "$command")
+  done
+}
+
+launch_server_session() {
+  local project="$1"
+
+  load_project_config "$project"
+  [[ -d "$PROJECT_PATH" ]] || die "project path does not exist: $PROJECT_PATH"
+  command -v herdr >/dev/null 2>&1 || die "herdr is not installed. Run setup.sh or install with: curl -fsSL https://herdr.dev/install.sh | sh"
+
+  run_bootstrap_commands "$project"
+
+  cd "$PROJECT_PATH"
+  exec env HERDR_SESSION="$DEV_SESSION" herdr
+}
+
+main() {
+  local force_server=false
+  local project=""
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --server)
+        force_server=true
+        shift
+        ;;
+      -h|--help|help)
+        usage
+        exit 0
+        ;;
+      --)
+        shift
+        break
+        ;;
+      -*)
+        die "unknown option: $1"
+        ;;
+      *)
+        project="$1"
+        shift
+        break
+        ;;
+    esac
+  done
+
+  [[ -n "$project" ]] || { usage >&2; exit 2; }
+
+  if [[ "$force_server" == "true" ]] || is_server; then
+    launch_server_session "$project"
+  fi
+
+  exec ssh -t "$DEV_SERVER_HOST" "dev --server $(printf '%q' "$project")"
+}
+
+main "$@"

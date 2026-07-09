@@ -8,6 +8,7 @@ CLEANIGNORE_FILE="${DOTS_FOLDER}/.cleanignore"
 # Configs that dotfiles manages - these are checked for dangling files
 MANAGED_CONFIGS=(
   ".config/ghostty"
+  ".config/dev"
   ".config/nvim"
   ".config/tmux"
   ".config/opencode"
@@ -18,6 +19,7 @@ MANAGED_CONFIGS=(
   ".ssh"
   ".zshrc"
   ".zshenv"
+  ".local/bin/dev"
 )
 
 # Check if a path matches any pattern in .cleanignore

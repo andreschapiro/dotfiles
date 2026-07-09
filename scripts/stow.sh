@@ -8,6 +8,7 @@
 # These must exist in home/ directory to be stowed
 MANAGED_PATHS=(
   ".config/ghostty"
+  ".config/dev"
   ".config/nvim"
   ".config/new-nvim"
   ".config/tmux"
@@ -23,11 +24,13 @@ MANAGED_PATHS=(
   ".bashrc"
   ".vimrc"
   ".p10k.zsh"
+  ".local/bin/dev"
 )
 
 # Paths for server install (no GUI configs)
 MANAGED_PATHS_SERVER=(
   ".config/nvim"
+  ".config/dev"
   ".config/tmux"
   ".config/opencode"
   ".config/systemd/user/opencode-web.service"
@@ -41,6 +44,7 @@ MANAGED_PATHS_SERVER=(
   ".bashrc"
   ".vimrc"
   ".p10k.zsh"
+  ".local/bin/dev"
 )
 
 # Get the appropriate managed paths based on install type
@@ -115,18 +119,19 @@ stow_configs() {
   # --target specifies where symlinks are created
   # --ignore='.ssh' prevents stow from touching ~/.ssh directory
   echo "  Running stow from ${stow_source}..."
-  run "cd ${DOTS_FOLDER} && stow -R --target=${HOME} --ignore='.ssh' ${stow_source}"
+  run "cd ${DOTS_FOLDER} && stow -R --target=${HOME} --ignore='.ssh' --ignore='.config/omarchy' ${stow_source}"
   
   # For server installs, also stow shared configs from home/ that aren't in home-server/
   if [[ "${SERVER_INSTALL:-false}" == "true" ]]; then
     echo "  Stowing shared configs from home/..."
     # Stow specific shared directories that server needs but aren't duplicated
-    for shared_path in ".config/nvim" ".config/tmux" ".config/opencode" ".config/pnpm" ".config/git" ".config/starship.toml" ".npmrc" ".bunfig.toml" ".zshrc" ".zshenv" ".bashrc" ".vimrc" ".p10k.zsh"; do
+    for shared_path in ".config/nvim" ".config/dev" ".config/tmux" ".config/opencode" ".config/pnpm" ".config/git" ".config/starship.toml" ".npmrc" ".bunfig.toml" ".zshrc" ".zshenv" ".bashrc" ".vimrc" ".p10k.zsh" ".local/bin/dev"; do
       if [[ -e "${DOTS_FOLDER}/home/${shared_path}" ]] && [[ ! -e "${DOTS_FOLDER}/home-server/${shared_path}" ]]; then
         # Only stow if not already in home-server
         local target="${HOME}/${shared_path}"
         local source="${DOTS_FOLDER}/home/${shared_path}"
         if [[ ! -L "$target" ]]; then
+          run "mkdir -p \"$(dirname "$target")\""
           run "ln -sf \"$source\" \"$target\""
         fi
       fi
