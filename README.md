@@ -67,13 +67,11 @@ DRY_RUN=true ./setup.sh
 │   │   ├── tmux/            # tmux
 │   │   ├── opencode/        # OpenCode AI
 │   │   ├── pnpm/            # pnpm package manager config
-│   │   ├── git/             # Git config
+│   │   ├── git/             # Global Git ignore rules
 │   │   ├── fontconfig/      # Font config (Linux only)
-│   │   ├── ssh/             # SSH config
 │   │   └── starship.toml    # Starship prompt
 │   ├── .zshrc               # Zsh configuration
 │   ├── .zshenv              # Zsh environment
-│   ├── .npmrc               # npm package manager config
 │   ├── .bunfig.toml         # Bun package manager config
 │   ├── .bashrc              # Bash configuration
 │   ├── .vimrc               # Vim configuration
@@ -87,7 +85,7 @@ DRY_RUN=true ./setup.sh
 │   ├── clean.sh             # Dangling config detection
 │   └── maintenance.sh       # Backup/update utilities
 ├── fonts/                   # Font README (not stowed)
-├── dotfiles-data/           # Private repo with fonts (not stowed)
+├── dotfiles-data/           # Private fonts and machine-specific overlay
 ├── setup.sh                 # Main setup script
 ├── .cleanignore             # Paths to ignore during clean
 └── README.md
@@ -97,7 +95,9 @@ DRY_RUN=true ./setup.sh
 
 This repo uses [GNU Stow](https://www.gnu.org/software/stow/) for symlink management.
 
-**Only items in `home/` are stowed.** The `home/` directory mirrors your home directory structure. When you run `./setup.sh`, stow creates symlinks:
+The public `home/` directory mirrors your home directory structure. When you
+run `./setup.sh`, it is stowed first and the matching private overlay is stowed
+afterward:
 
 ```
 ~/dotfiles/home/.zshrc  →  ~/.zshrc
@@ -130,9 +130,17 @@ This is used for:
 - Removing old symlinks before re-stowing
 - Documentation of what's managed
 
+## Private Overlay
+
+Machine-specific files are stored in the private `dotfiles-data` repository.
+Setup clones it when SSH access is available and stows its `home/` or
+`home-server/` package after the public configuration. This keeps SSH hosts,
+Git identity, local shell settings, server services, and licensed fonts out of
+the public repository.
+
 ## Fonts
 
-Fonts are stored in a separate private repository (`dotfiles-data`) due to licensing. The setup script will attempt to clone it if you have SSH access.
+Fonts are stored in `dotfiles-data` due to licensing. The setup script will attempt to clone it if you have SSH access.
 
 To manually install fonts, place `.otf` or `.ttf` files in:
 

@@ -25,6 +25,7 @@ backup_configs() {
     .config/pnpm
     .config/git
     .config/starship.toml
+    .gitconfig
     .npmrc
     .bunfig.toml
     .local/bin/dev
@@ -128,9 +129,10 @@ uninstall_dotfiles() {
     "${HOME}/.config/git"
     "${HOME}/.config/fontconfig"
     "${HOME}/.config/starship.toml"
+    "${HOME}/.gitconfig"
     "${HOME}/.npmrc"
     "${HOME}/.bunfig.toml"
-    "${HOME}/.ssh"
+    "${HOME}/.ssh/config"
     "${HOME}/.zshrc"
     "${HOME}/.zshenv"
     "${HOME}/.local/bin/dev"

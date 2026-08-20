@@ -1,19 +1,16 @@
 #!/usr/bin/env bash
 
 # Font installation script
-# Clones dotfiles-data (private repo with fonts) if not present, then installs fonts
+# Clones the private data/config repository if needed, then installs fonts
 
-# Private repo containing fonts
+# Private repository containing fonts and machine-specific configuration
 DOTFILES_DATA_REPO="git@github.com:andreschapiro/dotfiles-data.git"
 DOTFILES_DATA_DIR="${DOTS_FOLDER}/dotfiles-data"
 
-# Clone dotfiles-data if fonts are missing
+# Clone or update access to dotfiles-data.
 clone_dotfiles_data() {
-  local fonts_dir="${DOTFILES_DATA_DIR}/fonts"
-
-  # Check if fonts already exist in dotfiles-data
-  if [[ -d "$fonts_dir" ]] && [[ -n "$(ls -A "$fonts_dir" 2>/dev/null)" ]]; then
-    echo "  dotfiles-data fonts already present"
+  if [[ -d "${DOTFILES_DATA_DIR}/.git" ]]; then
+    echo "  dotfiles-data already present"
     return 0
   fi
 
@@ -21,14 +18,13 @@ clone_dotfiles_data() {
   local ssh_output
   ssh_output=$(ssh -T git@github.com 2>&1 || true)
   if ! echo "$ssh_output" | grep -q "successfully authenticated"; then
-    echo "  Warning: No GitHub SSH access, skipping private fonts"
-    echo "  Fonts will need to be manually installed to ~/dotfiles/dotfiles-data/fonts/"
+    echo "  Warning: No GitHub SSH access, skipping private configuration and fonts"
     return 1
   fi
 
-  echo "  Cloning dotfiles-data (private fonts repo)..."
+  echo "  Cloning dotfiles-data (private configuration and fonts)..."
   if [[ -d "$DOTFILES_DATA_DIR" ]]; then
-    # Directory exists but fonts missing - try to pull
+    # Directory exists but is not a checkout; surface the git error.
     run "cd ${DOTFILES_DATA_DIR} && git pull"
   else
     # Fresh clone

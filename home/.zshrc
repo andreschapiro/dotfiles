@@ -204,7 +204,7 @@ if command -v mise &>/dev/null; then
 fi
 
 # opencode
-export PATH=$HOME/.opencode/bin:$PATH
+export PATH="$HOME/.opencode/bin:$PATH"
 export PATH="$HOME/.cache/.bun/bin:$PATH"
 export PATH="$HOME/.bun/bin:$PATH"
 
@@ -222,3 +222,8 @@ bindkey '^A' beginning-of-line
 bindkey '^E' end-of-line
 bindkey -M viins '^A' beginning-of-line
 bindkey -M viins '^E' end-of-line
+
+# Machine-specific settings belong outside the public repository.
+if [[ -f "$HOME/.zshrc.local" ]]; then
+  source "$HOME/.zshrc.local"
+fi

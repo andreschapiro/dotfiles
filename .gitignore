@@ -14,6 +14,18 @@ home/.ssh/id_*
 home/.ssh/known_hosts
 home/.ssh/*.pub
 
+# Personal and machine-specific configuration (stored in dotfiles-data)
+home/.ssh/config
+home-server/.ssh/config
+home/.gitconfig
+home/.config/git/.gitconfig
+home/.config/dev/state/
+home/.config/dev/projects/*.conf
+!home/.config/dev/projects/example.conf
+home/.config/nvim/spell/*.add*
+home-server/.config/systemd/user/*.service
+home/.npmrc
+
 # Secrets and credentials (catch-all)
 *.pem
 *.key

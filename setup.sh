@@ -148,7 +148,12 @@ server_setup() {
 setup_opencode_webui_service() {
   echo "==> Configuring OpenCode Web UI service"
 
-  # Ensure the user systemd directory exists (service file is stowed from home-server/)
+  if [[ ! -f "${HOME}/.config/systemd/user/opencode-web.service" ]]; then
+    echo "  Private OpenCode Web UI service is not installed; skipping"
+    return 0
+  fi
+
+  # Ensure the user systemd directory exists (service file is stowed from the private overlay)
   run "mkdir -p \"${HOME}/.config/systemd/user\""
 
   # Keep user services running at boot even without an interactive login

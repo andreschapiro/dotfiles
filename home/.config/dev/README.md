@@ -1,10 +1,10 @@
 # dev
 
-`dev <project>` opens a remote development session for a project on the server.
+`dev <project>` opens a remote development session for a project on a configured server.
 
 Defaults:
 
-- Client machines SSH to `server-ssh-alias`.
+- Client machines SSH to `DEV_SERVER_HOST`.
 - Server projects live under `~/Projects`.
 - Herdr sessions are named `dev-<project>`.
 

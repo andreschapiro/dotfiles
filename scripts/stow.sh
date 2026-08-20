@@ -2,10 +2,9 @@
 
 # Stow Script
 # Uses GNU stow to create symlinks for dotfiles
-# Only paths listed in MANAGED_PATHS will be stowed
+# Public files are stowed first, followed by the optional private overlay.
 
-# Paths that stow will manage (desktop/laptop)
-# These must exist in home/ directory to be stowed
+# Paths that setup backs up or replaces for desktop/laptop installs.
 MANAGED_PATHS=(
   ".config/ghostty"
   ".config/dev"
@@ -17,6 +16,8 @@ MANAGED_PATHS=(
   ".config/git"
   ".config/fontconfig"
   ".config/starship.toml"
+  ".gitconfig"
+  ".ssh/config"
   ".npmrc"
   ".bunfig.toml"
   ".zshrc"
@@ -37,6 +38,8 @@ MANAGED_PATHS_SERVER=(
   ".config/pnpm"
   ".config/git"
   ".config/starship.toml"
+  ".gitconfig"
+  ".ssh/config"
   ".npmrc"
   ".bunfig.toml"
   ".zshrc"
@@ -108,18 +111,21 @@ stow_configs() {
   # Ensure ~/.config exists
   run "mkdir -p \"${HOME}/.config\""
 
+  # Make the private overlay available for both desktop and server installs.
+  clone_dotfiles_data || true
+
   # Backup real files/directories
   backup_existing_configs
 
   # Remove existing symlinks so stow can recreate them properly
   remove_existing_symlinks
 
-  # Stow the home package (excludes .ssh to preserve keys)
+  # Stow the public home package. SSH targets live in the private overlay.
   # --restow (-R) will restow (useful for updates)
   # --target specifies where symlinks are created
-  # --ignore='.ssh' prevents stow from touching ~/.ssh directory
+  # --ignore='.ssh' prevents the public package from touching ~/.ssh.
   echo "  Running stow from ${stow_source}..."
-  run "cd ${DOTS_FOLDER} && stow -R --target=${HOME} --ignore='.ssh' --ignore='.config/omarchy' ${stow_source}"
+  run "cd ${DOTS_FOLDER} && stow -R --no-folding --target=${HOME} --ignore='.ssh' --ignore='.config/omarchy' ${stow_source}"
   
   # For server installs, also stow shared configs from home/ that aren't in home-server/
   if [[ "${SERVER_INSTALL:-false}" == "true" ]]; then
@@ -138,18 +144,13 @@ stow_configs() {
     done
   fi
 
-  # Manually symlink SSH config (preserves existing keys in ~/.ssh)
-  echo "  Linking SSH config..."
-  run "mkdir -p \"${HOME}/.ssh\""
-  run "chmod 700 \"${HOME}/.ssh\""
-  if [[ -L "${HOME}/.ssh/config" ]]; then
-    run "rm \"${HOME}/.ssh/config\""
-  elif [[ -f "${HOME}/.ssh/config" && ! -L "${HOME}/.ssh/config" ]]; then
-    local backup_timestamp
-    backup_timestamp=$(date +%s)
-    run "mv \"${HOME}/.ssh/config\" \"${HOME}/.ssh/config.backup.${backup_timestamp}\""
+  # Apply machine-specific files only when the private repository is available.
+  if [[ -d "${DOTFILES_DATA_DIR}/${stow_source}" ]]; then
+    echo "  Stowing private ${stow_source} overlay..."
+    run "cd ${DOTFILES_DATA_DIR} && stow -R --no-folding --target=${HOME} ${stow_source}"
+  else
+    echo "  Private ${stow_source} overlay not found; skipping"
   fi
-  run "ln -sf \"${DOTS_FOLDER}/${stow_source}/.ssh/config\" \"${HOME}/.ssh/config\""
 
   # Refresh font cache (skip on server)
   if [[ "${SERVER_INSTALL:-false}" != "true" ]] && command -v fc-cache &>/dev/null; then

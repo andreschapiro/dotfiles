@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-DEV_SERVER_HOST="${DEV_SERVER_HOST:-server-ssh-alias}"
+DEV_SERVER_HOST="${DEV_SERVER_HOST:-}"
 DEV_SERVER_MARKER_HOSTS="${DEV_SERVER_MARKER_HOSTS:-$DEV_SERVER_HOST}"
 DEV_PROJECT_ROOT="${DEV_PROJECT_ROOT:-${HOME}/Projects}"
 DEV_CONFIG_DIR="${DEV_CONFIG_DIR:-${HOME}/.config/dev}"
@@ -144,6 +144,8 @@ main() {
   if [[ "$force_server" == "true" ]] || is_server; then
     launch_server_session "$project"
   fi
+
+  [[ -n "$DEV_SERVER_HOST" ]] || die "DEV_SERVER_HOST is not set. Define it in ~/.zshrc.local or ~/.bashrc.local"
 
   local quoted_project
   quoted_project="$(printf '%q' "$project")"
